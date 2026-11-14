@@ -1,6 +1,6 @@
 print("Добро пожаловать в MiniMarketSimulator!")
 import tkinter as tk
-
+from tkinter import simpledialog, messagebox
 while True:
     try:
         money = int(input("Введите стартовый капитал:  "))
@@ -185,12 +185,39 @@ def buy_product(product_name: str, quantity: int) -> tuple[bool, str]:
 
 window = tk.Tk()
 window.title("MiniMarketSimulator")
-window.geometry(1000*600)
+window.geometry("1000*600")
 def selected_product(product_name: str) -> None:
     selected_label.config(text = "Вы выбрали: "+ product_name)
-    selected_label = tk.Label(window, text = "Выберите товар для закупки", font = ("Arial, 16") )
-    selected_label.pack(pady = 20)
-    buttons_frame = tk.Frame
+    quantity = simpledialog.askinteger("Закупка товара", "Сколько упаковок хотите закупить?", minvalue = 1 )
+    if quantity is None:
+        return
+    success, message = buy_product(product_name, quantity)
+    if success:
+        messagebox.showinfo( "Результат", f"Покупка успешна!/n"
+                            f"Товар: {product_name}/n"
+                            f"Куплено упаковок: {quantity}"
+                            f("Осталось денег: {money}/n"
+                            f"Всего упаковок на складе: {products[product_name]["stock"]}"
+                            )
+    else:
+        messagebox.showerror("Ошибка", message)
+selected_label = tk.Label(window, text = "Выберите товар для закупки", font = ("Arial, 16") )
+selected_label.pack(pady = 20)
+buttons_frame = tk.Frame(window)
+buttons_frame.pack()
+for number, product_name in enumerate(products):
+    button = tk.Button(buttons_frame, text = product_name, width = 23, height = 2,
+                        command = lambda name = product_name: selected_product(name)) 
+    #Каждая кнопка запоминает своё название товара и передаёт его в функцию select_product()
+    button.grid(row = number // 4, column = number % 4, padx = 5, pady = 5)
+window.mainloop()
+
+
+
+
+
+        
+
 
 
 
