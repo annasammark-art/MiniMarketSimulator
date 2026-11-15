@@ -15,3 +15,14 @@ def change_competitor_prices(products: dict) -> dict:
         new_prices[name] = new_price
 
     return new_prices
+
+products = {
+    "Бананы": {"competitor_price": 80},
+    "Яблоки": {"competitor_price": 75}
+}
+
+new_prices = change_competitor_prices(products)
+
+print("Старые цены:", products)
+print("Новые цены:", new_prices)
+\
